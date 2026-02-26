@@ -201,15 +201,27 @@
             width: 100%;
             max-width: 800px;   /* optional: begrenzt Breite */
         }
-
+        .Input{ 
+            height: 40px;
+            width: 30vw;
+            background-color: rgb(240, 240, 240);   
+            border: 1.5px solid rgb(32, 32, 32);
+            border-radius: 10px;
+            position: relative;
+            top: 50px;
+            left: 20px;
+        }
+        .Input_Layout{
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
     </style>
     <h1>Scooter-Konfigurator</h1>
     <div class="Höhe">
-        
             <div class="Small_Container" onclick= "addToDo(1)">
                 <h3>Deck</h3>
-           
         </div>
         <div id="Einheit1" class="Einheit1">
             <div class="Small_Container" onclick= "addToDo(2)">
@@ -262,6 +274,12 @@
         <h1 class="EndProdukte" id="EndProdukte"></h1>
         <h1 class="EndProdukte" id="EndProdukte"></h1>
         <div class="Kosten" id="Kosten">
+        </div>
+        <div class="Input_Layout">
+            <input type="text" placeholder="Email" class="Input" id="Input">
+            <input type="text" placeholder="Land" class="Input" id="Input">
+            <input type="text" placeholder="Ort" class="Input" id="Input">
+            <input type="text" placeholder="Strasse + Hausnummer" class="Input" id="Input">
         </div>
     </div>
     
@@ -420,6 +438,7 @@
     let freigeben = 1;
     let Warenkorb = document.getElementById("Warenkorb");
     let EndProdukte = document.getElementById("EndProdukte");
+    let Input = document.querySelectorAll('.Input');
 
     function Freigeben() {
     Small_Container.forEach((element, index) => {
@@ -1412,13 +1431,22 @@ function Speichern2(index, Buttons2){
 
 paypal.Buttons({
   createOrder: () => {
+      for (let i = 0; i < Input.length; i++) {
+      if (Input[i].value.trim() === "") {
+        alert("Bitte füllen Sie zuerst alle Eingabefelder aus, bevor Sie fortfahren.");
+        return Promise.reject("Eingabefelder nicht ausgefüllt");
+      }else{
+        let InputValue = Input[i].value.trim();
+      }
+    }
     return fetch("http://localhost:3000/api/paypal/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         Produkte: AusgewählteProdukteArray,
         KonfigurationenArray: KonfigurationenArray,
-        produkte: AusgewählteProdukteArrayPreis.map(p => parseFloat(p))
+        produkte: AusgewählteProdukteArrayPreis.map(p => parseFloat(p)),
+          InputValue: InputValue
       })
       
     })
@@ -1434,7 +1462,8 @@ paypal.Buttons({
       orderID: data.orderID,
       Produkte: AusgewählteProdukteArray,
       KonfigurationenArray: KonfigurationenArray,
-      produkte: AusgewählteProdukteArrayPreis.map(p => parseFloat(p))
+      produkte: AusgewählteProdukteArrayPreis.map(p => parseFloat(p)),
+        InputValue: InputValue
     })
     
   })
