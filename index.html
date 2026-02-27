@@ -439,6 +439,7 @@
     let Warenkorb = document.getElementById("Warenkorb");
     let EndProdukte = document.getElementById("EndProdukte");
     let Input = document.querySelectorAll('.Input');
+    let InputValue = {};
 
     function Freigeben() {
     Small_Container.forEach((element, index) => {
@@ -1436,7 +1437,7 @@ paypal.Buttons({
         alert("Bitte füllen Sie zuerst alle Eingabefelder aus, bevor Sie fortfahren.");
         return Promise.reject("Eingabefelder nicht ausgefüllt");
       }else{
-        let InputValue = Input[i].value.trim();
+        InputValue = Input[i].value.trim();
       }
     }
     return fetch("http://localhost:3000/api/paypal/create-order", {
