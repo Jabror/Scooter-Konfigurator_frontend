@@ -1440,7 +1440,7 @@ paypal.Buttons({
         InputValue = Input[i].value.trim();
       }
     }
-    return fetch("http://localhost:3000/api/paypal/create-order", {
+    return fetch("https://scooterkonfigurator-backend.onrender.com/api/paypal/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1456,7 +1456,7 @@ paypal.Buttons({
   },
 
   onApprove: (data) => {
-  return fetch("http://localhost:3000/api/paypal/capture-order", {
+  return fetch("https://scooterkonfigurator-backend.onrender.com/api/paypal/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
